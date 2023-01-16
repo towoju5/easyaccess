@@ -1,0 +1,57 @@
+{
+    "name": "towoju5/easyaccess-api",
+    "description": "A php curl wrapper for easyaccess.com.ng data reseller ",
+    "keywords": [
+        "towoju5",
+        "easyaccess-api"
+    ],
+    "homepage": "https://github.com/towoju5/easyaccess-api",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "EMMANUEL TOWOJU",
+            "email": "towojuads@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helper.php"
+        ],
+        "psr-4": {
+            "Towoju5\\EasyaccessApi\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Towoju5\\EasyaccessApi\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Towoju5\\EasyaccessApi\\EasyaccessApiServiceProvider"
+            ],
+            "aliases": {
+                "EasyaccessApi": "Towoju5\\EasyaccessApi\\EasyaccessApiFacade"
+            }
+        }
+    }
+}
