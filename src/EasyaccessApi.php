@@ -4,6 +4,7 @@ namespace Towoju5\EasyaccessApi;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Http;
 
 class EasyaccessApi
 {
@@ -72,7 +73,7 @@ class EasyaccessApi
 
     public function verifytv($data = [])
     {
-        $result = self::process('verifytv.php', 'POST', ['reference' => $data]);
+        $result = self::process('verifytv.php', 'POST', $data);
         return $result;
     }
 
@@ -98,15 +99,24 @@ class EasyaccessApi
     {
         $auth_token = getenv("EASYACCESS_API");
         $url = "https://easyaccess.com.ng/api/$endpoint";
-        $client = new Client();
-        $headers = [
-            "AuthorizationToken" => "Bearer $auth_token",
-            "Content-Type"  => "application/json",
-            "cache-control" => "no-cache"
-        ];
-        $data = [];
-        $request = new Request($method, $url, $headers);
-        $res = $client->sendAsync($request, $data)->wait();
-        echo $res->getBody();
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_HTTPHEADER => array(
+                "AuthorizationToken: $auth_token", //replace this with your authorization_token
+                "cache-control: no-cache"
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($response);
     }
 }
